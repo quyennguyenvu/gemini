@@ -1,0 +1,138 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "todo.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/todo": {
+      "get": {
+        "operationId": "List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/todoListResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "api",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Todo"
+        ]
+      },
+      "post": {
+        "operationId": "Store",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/todoStoreResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/todoStoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Todo"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "todoListResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "toDos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/todoToDo"
+          }
+        }
+      }
+    },
+    "todoStoreRequest": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "reminder": {
+          "type": "string"
+        }
+      }
+    },
+    "todoStoreResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "todoToDo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "reminder": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
