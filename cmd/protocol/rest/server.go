@@ -2,7 +2,7 @@ package rest
 
 import (
 	"context"
-	"gemini/pb/v1/todo"
+	"gemini/pb/v1/event"
 	"log"
 	"net/http"
 	"os"
@@ -20,8 +20,8 @@ func RunServer(ctx context.Context, grpcPort, httpPort string, opts ...runtime.S
 	mux := runtime.NewServeMux(opts...)
 	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
 
-	// todo
-	if err := todo.RegisterTodoHandlerFromEndpoint(ctx, mux, "localhost:"+grpcPort, dialOpts); err != nil {
+	// event
+	if err := event.RegisterEventServiceHandlerFromEndpoint(ctx, mux, "localhost:"+grpcPort, dialOpts); err != nil {
 		return err
 	}
 

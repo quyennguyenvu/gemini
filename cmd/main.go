@@ -37,7 +37,7 @@ func RunServer() error {
 	}()
 
 	withServer := []grpc.OptionFunc{
-		grpc.WithTodoServer(handler.NewTodoHandler()),
+		grpc.WithEventServer(handler.NewEventHandler()),
 	}
 
 	return grpc.RunServer(ctx, grpcPort, withServer...)

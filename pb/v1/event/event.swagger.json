@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "todo.proto",
+    "title": "event.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -15,14 +15,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/todo": {
+    "/v1/event": {
       "get": {
         "operationId": "List",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/todoListResponse"
+              "$ref": "#/definitions/eventListResponse"
             }
           }
         },
@@ -41,7 +41,7 @@
           }
         ],
         "tags": [
-          "Todo"
+          "EventService"
         ]
       },
       "post": {
@@ -50,7 +50,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/todoStoreResponse"
+              "$ref": "#/definitions/eventStoreResponse"
             }
           }
         },
@@ -60,49 +60,60 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/todoStoreRequest"
+              "$ref": "#/definitions/eventStoreRequest"
             }
           }
         ],
         "tags": [
-          "Todo"
+          "EventService"
         ]
       }
     }
   },
   "definitions": {
-    "todoListResponse": {
+    "eventEvent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        }
+      }
+    },
+    "eventListResponse": {
       "type": "object",
       "properties": {
         "api": {
           "type": "string"
         },
-        "toDos": {
+        "events": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/todoToDo"
+            "$ref": "#/definitions/eventEvent"
           }
         }
       }
     },
-    "todoStoreRequest": {
+    "eventStoreRequest": {
       "type": "object",
       "properties": {
         "api": {
           "type": "string"
         },
-        "title": {
+        "body": {
           "type": "string"
         },
-        "description": {
-          "type": "string"
-        },
-        "reminder": {
+        "created_at": {
           "type": "string"
         }
       }
     },
-    "todoStoreResponse": {
+    "eventStoreResponse": {
       "type": "object",
       "properties": {
         "api": {
@@ -114,23 +125,6 @@
         "success": {
           "type": "boolean",
           "format": "boolean"
-        }
-      }
-    },
-    "todoToDo": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "reminder": {
-          "type": "string"
         }
       }
     }

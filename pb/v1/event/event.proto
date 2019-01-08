@@ -1,27 +1,26 @@
 syntax = "proto3";
-package todo;
+package event;
 
 import "google/api/annotations.proto";
 
-service Todo {
+service EventService {
     rpc List(ListRequest) returns (ListResponse){
         option (google.api.http) = {
-            get: "/v1/todo"
+            get: "/v1/event"
         };
     }
     rpc Store(StoreRequest) returns (StoreResponse) {
         option (google.api.http) = {
-            post: "/v1/todo"
+            post: "/v1/event"
             body: "*"
         };
     }
 }
 
-message ToDo {
+message Event {
     string id = 1;
-    string title = 2;
-    string description = 3;
-    string reminder = 4;
+    string body = 2;
+    string created_at = 3;
 }
 
 message ListRequest {
@@ -31,14 +30,13 @@ message ListRequest {
 
 message ListResponse {
     string api = 1;
-    repeated ToDo toDos = 2;
+    repeated Event events = 2;
 }
 
 message StoreRequest {
     string api = 1;
-    string title = 2;
-    string description = 3;
-    string reminder = 4;
+    string body = 2;
+    string created_at = 3;
 }
 
 message StoreResponse {
