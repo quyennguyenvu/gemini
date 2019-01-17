@@ -2,7 +2,6 @@ package grpc
 
 import (
 	"context"
-	"gemini/pb/v1/event"
 	"log"
 	"net"
 	"os"
@@ -13,13 +12,6 @@ import (
 
 // OptionFunc ..
 type OptionFunc func(*grpc.Server)
-
-// WithEventServer ..
-func WithEventServer(eventSrv event.EventServiceServer) OptionFunc {
-	return func(srv *grpc.Server) {
-		event.RegisterEventServiceServer(srv, eventSrv)
-	}
-}
 
 // RunServer ..
 func RunServer(ctx context.Context, grpcPort string, optFuncs ...OptionFunc) error {

@@ -25,12 +25,14 @@ func RunServer() error {
 	ctx := context.Background()
 
 	go func() {
-		_ = rest.RunServer(ctx, port.GRPCPort, port.HTTPPort)
+		withServerRest := []rest.OptionFunc{
+			rest.WithEventServer(),
+		}
+		rest.RunServer(ctx, port.GRPCPort, port.HTTPPort, withServerRest...)
 	}()
 
-	withServer := []grpc.OptionFunc{
+	withServerGRPC := []grpc.OptionFunc{
 		grpc.WithEventServer(handler.NewEventHandler()),
 	}
-
-	return grpc.RunServer(ctx, port.GRPCPort, withServer...)
+	return grpc.RunServer(ctx, port.GRPCPort, withServerGRPC...)
 }
