@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"gemini/cmd/protocol/grpc"
 	"gemini/cmd/protocol/rest"
+	"gemini/config"
 	"gemini/handler"
 	"gemini/storage"
-	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -23,22 +21,16 @@ func main() {
 
 // RunServer ..
 func RunServer() error {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	httpPort := os.Getenv("HTTP_PORT")
-	grpcPort := os.Getenv("GRPC_PORT")
-
+	port := config.GetPort()
 	ctx := context.Background()
 
 	go func() {
-		_ = rest.RunServer(ctx, grpcPort, httpPort)
+		_ = rest.RunServer(ctx, port.GRPCPort, port.HTTPPort)
 	}()
 
 	withServer := []grpc.OptionFunc{
 		grpc.WithEventServer(handler.NewEventHandler()),
 	}
 
-	return grpc.RunServer(ctx, grpcPort, withServer...)
+	return grpc.RunServer(ctx, port.GRPCPort, withServer...)
 }

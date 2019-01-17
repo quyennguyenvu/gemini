@@ -19,7 +19,7 @@ func Connect() {
 	once.Do(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
-		conf := config.GetConnection()
+		conf := config.GetDBConnection()
 		client, err := mongo.Connect(ctx, conf.DataSource)
 		if err != nil {
 			helper.Logging("Storage", "Connect", err.Error())

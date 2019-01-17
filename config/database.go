@@ -1,61 +1,39 @@
 package config
 
 import (
-	"log"
 	"os"
-
-	"github.com/joho/godotenv"
+	"sync"
 )
 
-// Connection ..
-type Connection struct {
+// DBConnection ..
+type DBConnection struct {
 	DataSource string
 	Database   string
 }
 
-// Serve ..
-type Serve struct {
-	Port string
-}
+var confConnection *DBConnection
+var dbInit sync.Once
 
-var confConnection *Connection
-var confServe *Serve
+// GetDBConnection ..
+func GetDBConnection() *DBConnection {
+	dbInit.Do(func() {
+		drive := os.Getenv("DB_CONNECTION")
+		dbHost := os.Getenv("DB_HOST")
+		dbPort := os.Getenv("DB_PORT")
+		database := os.Getenv("DB_DATABASE")
+		userName := os.Getenv("DB_USERNAME")
+		password := os.Getenv("DB_PASSWORD")
 
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+		// select datasource
+		dataSource := drive + "://" +
+			userName + ":" + password +
+			"@" + dbHost + ":" + dbPort
 
-	drive := os.Getenv("DB_CONNECTION")
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	database := os.Getenv("DB_DATABASE")
-	userName := os.Getenv("DB_USERNAME")
-	password := os.Getenv("DB_PASSWORD")
-
-	// select datasource
-	dataSource := drive + "://" +
-		userName + ":" + password +
-		"@" + dbHost + ":" + dbPort
-
-	confConnection = &Connection{
-		DataSource: dataSource,
-		Database:   database,
-	}
-
-	servePort := os.Getenv("SERVE_PORT")
-	confServe = &Serve{
-		Port: servePort,
-	}
-}
-
-// GetConnection ..
-func GetConnection() *Connection {
+		confConnection = &DBConnection{
+			DataSource: dataSource,
+			Database:   database,
+		}
+		println(dataSource)
+	})
 	return confConnection
-}
-
-// GetServe ..
-func GetServe() *Serve {
-	return confServe
 }
